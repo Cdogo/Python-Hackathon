@@ -44,7 +44,14 @@ def get_response():
     if (answer1 == cAnswer):
         return render_template("checkAnswer.html",value = (" Correct!" + str(cAnswer) + "is correct "))
     else:
-        return render_template("checkAnswer.html",value = "Incorrect" + "\n The correct answer was " + str(cAnswer) + "\nThe work is shown below: \n "+ str(ApData.getSolution))
+        finalStr = "Incorrect." + "\n The correct answer was " + str(cAnswer)
+        try:
+            finalStr += "\nThe work is shown below: \n "+ str(ApData.getSolution())
+            return(render_template("checkAnswer.html", value = finalStr))
+        except:
+            return(render_template("checkAnswer.html", value = finalStr))
+
+        return render_template("checkAnswer.html",value = "Incorrect" + "\n The correct answer was " + str(cAnswer) + "\nThe work is shown below: \n "+ str(ApData.getSolution()))
 
 if __name__ == "__main__":
     app.run()
