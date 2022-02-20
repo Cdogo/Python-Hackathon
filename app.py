@@ -34,7 +34,7 @@ def index():
     ApData.setEquation(ques)
     return render_template("practice.html",value = ApData.eq) 
 
-@app.route("/get")
+@app.route("/checkAnswer")
 def get_response():
     #if request.method == "POST":
     answer1 = request.form.get("answer")
@@ -42,9 +42,9 @@ def get_response():
     #answer1 = request.args.get('answer')
     cAnswer = ApData.getAnswer()
     if (answer1 == cAnswer):
-        return render_template("checkAnswer.html",value = (" Correct!" + cAnswer + "is correct "))
+        return render_template("checkAnswer.html",value = (" Correct!" + str(cAnswer) + "is correct "))
     else:
-        return render_template("checkAnswer.html",value = "Incorrect" + "\n The correct answer was " + cAnswer + "\nThe work is shown below: \n "+ ApData.getSolution)
+        return render_template("checkAnswer.html",value = "Incorrect" + "\n The correct answer was " + str(cAnswer) + "\nThe work is shown below: \n "+ str(ApData.getSolution))
 
 if __name__ == "__main__":
     app.run()
