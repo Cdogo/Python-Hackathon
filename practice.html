@@ -1,11 +1,16 @@
-<div id="Practice" class="tabcontent">
-    <h3>Practice</h3>
-    <p>For each topic, here are several practice questions. Please type in only the final result. For example, if we had the problem 2x=4, your answer should be written as 2. </p>
-    <body>
-        <form>
-        <h4> Topic: Pre-Algebra </h4> 
-        <label for="answer">Your answer: x = </label>
-        <input type="text" id="Answer: " name="answer"><br>
-        </form>
-    </body>
-</div>
+{%extends layout.html%}
+{%extends navbar.html%}
+<body>
+    <div id="Practice" class="tabcontent">
+        <h3>Practice</h3>
+        <p>For each topic, here are several practice questions. Please type in only the final result. For example, if we had the problem 2x=4, your answer should be written as 2. </p>
+        <body>
+            <form>
+            <h4> Topic: Pre-Algebra </h4> 
+            <p>Solve for x : {{value}}</p>
+            <label for="answer">Your answer: x = </label>
+            <input type="text" id="Answer: " name="answer"><br>
+            </form>
+        </body>
+    </div>
+</body>

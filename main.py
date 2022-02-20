@@ -6,10 +6,10 @@ class ApiData:
     def __init__(self, equation):
         self.eq = equation
 
-        self.apiData = requests.get(f"http://api.wolframalpha.com/v2/query?appid=YGV9XJ-RH825P558W&input=solve+{self.eq.formatEq()}&podstate=Result__Step-by-step+solution&format=plaintext&includepodid=Result&output=json").json()
+        self.apiData = requests.get(f"http://api.wolframalpha.com/v2/query?appid=YGV9XJ-RH825P558W&input=solve+{self.formatEq()}&podstate=Result__Step-by-step+solution&format=plaintext&includepodid=Result&output=json").json()
         
-    def formatEq(self, equation):
-        return eq.replace('=', '%3D')
+    def formatEq(self):
+        return self.eq.replace('=', '%3D')
 
     def getAnswer(self):
         return self.apiData['queryresult']['pods'][0]['subpods'][0]['plaintext']
