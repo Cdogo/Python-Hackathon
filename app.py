@@ -10,7 +10,11 @@ class ApiData:
         self.eq = equation
 
         self.apiData = requests.get(f"http://api.wolframalpha.com/v2/query?appid=YGV9XJ-RH825P558W&input=solve+{self.formatEq()}&podstate=Result__Step-by-step+solution&format=plaintext&includepodid=Result&output=json").json()
-        
+
+    def setEquation(self,equation):
+        self.eq = equation
+        self.apiData = requests.get(f"http://api.wolframalpha.com/v2/query?appid=YGV9XJ-RH825P558W&input=solve+{self.formatEq()}&podstate=Result__Step-by-step+solution&format=plaintext&includepodid=Result&output=json").json()
+
     def formatEq(self):
         return self.eq.replace('=', '%3D')
 
@@ -24,7 +28,25 @@ listQ = ["3x+5-12x=35", "3x+1=5","2x*5=10","6!","5=6x+2","10=7x+1"]
 app = Flask(__name__)
 ques = listQ[random.randrange(5)]
 ApData = ApiData(ques)
+@app.route('/')  
+def index():
+    ques = listQ[random.randrange(5)]
+    ApData.setEquation(ques)
+    return render_template("practice.html",value = ApData.eq) 
 
+@app.route("/get")
+def get_response():
+    print("GETTTTT")
+    answer1 = request.args.get('answer')
+    cAnswer = ApData.getAnswer()
+    if (answer1 == cAnswer):
+        return render_template("checkAnswer.html",value = (" Correct!" + cAnswer + "is correct "))
+    else:
+        return render_template("checkAnswer.html",value = "Incorrect" + "\n The correct answer was " + cAnswer + "\nThe work is shown below: \n "+ ApData.getSolution)
+
+if __name__ == "__main__":
+    app.run()
+"""
 @app.route('/')  
 def index():
     return render_template("index.html") 
@@ -41,9 +63,8 @@ def questions():
 @app.route("/study")
 def study():
     return render_template("study.html")
-    
-if __name__ == "__main__":
-    app.run()
+"""
+
 #def getWebResponse():
  #   #userText = request.args.get("msg")
 
