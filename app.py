@@ -36,8 +36,10 @@ def index():
 
 @app.route("/get")
 def get_response():
+    #if request.method == "POST":
+    answer1 = request.form.get("answer")
     print("GETTTTT")
-    answer1 = request.args.get('answer')
+    #answer1 = request.args.get('answer')
     cAnswer = ApData.getAnswer()
     if (answer1 == cAnswer):
         return render_template("checkAnswer.html",value = (" Correct!" + cAnswer + "is correct "))
