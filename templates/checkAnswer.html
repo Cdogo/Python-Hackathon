@@ -2,9 +2,14 @@
   <body>
     <form action="/">
     <h3> Answer: </h3>
-    <p> {{value}} </p>
 
-    <input id="buttonInput" class="btn btn-success form-control" type="Submit" value="Get another question">
+    <p> 
+        {% autoescape false %}
+        {{value}} 
+        {% endautoescape %}
+    </p>
+    
+    <input style = 'background-color:none; border:0px;' id="buttonInput" class="btn btn-success form-control" type="Submit" value="Get another question">
     </form>
   </body>
 </div>

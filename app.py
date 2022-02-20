@@ -16,15 +16,20 @@ class ApiData:
         self.apiData = requests.get(f"http://api.wolframalpha.com/v2/query?appid=YGV9XJ-RH825P558W&input=solve+{self.formatEq()}&podstate=Result__Step-by-step+solution&format=plaintext&includepodid=Result&output=json").json()
 
     def formatEq(self):
-        return self.eq.replace('=', '%3D')
+        return self.eq.replace('=', '%3D').replace("+","%2D")
 
     def getAnswer(self):
         return self.apiData['queryresult']['pods'][0]['subpods'][0]['plaintext']
 
-    def getSolution(self):
-        return self.apiData['queryresult'][ 'pods'][0]['subpods'][1]['plaintext']
+    def getSolAnswer(self):
+        self.pop = self.apiData['queryresult']['pods'][0]['subpods'][0]['plaintext'].replace("x","")
+        self.pop = self.apiData['queryresult']['pods'][0]['subpods'][0]['plaintext'].replace(" ","")
+        return self.pop
 
-listQ = ["3x+5-12x=35", "3x+1=5","2x*5=10","6!","5=6x+2","10=7x+1"]
+    def getSolution(self):
+        return str(self.apiData['queryresult'][ 'pods'][0]['subpods'][1]['plaintext']).replace("\n","  <br>  ")
+
+listQ = ["10x+5=55", "3x+2=8","2x+5=11","20x+20=80","6x=12+3x","15=7x+1", '210=5x+10', '1=x-10', '5x+10=110']
 app = Flask(__name__)
 ques = listQ[random.randrange(5)]
 ApData = ApiData(ques)
@@ -40,18 +45,18 @@ def get_response():
     answer1 = request.form.get("answer")
     print("GETTTTT")
     #answer1 = request.args.get('answer')
-    cAnswer = ApData.getAnswer()
+    cAnswer = ApData.getSolAnswer()
     if (answer1 == cAnswer):
         return render_template("checkAnswer.html",value = (" Correct!" + str(cAnswer) + "is correct "))
     else:
-        finalStr = "Incorrect." + "\n The correct answer was " + str(cAnswer)
+        finalStr = "Incorrect." + "<br> The correct answer was " + str(cAnswer) + "<br>"
         try:
-            finalStr += "\nThe work is shown below: \n "+ str(ApData.getSolution())
+            finalStr += "<br> The work is shown below: \n "+"<br>"+ str(ApData.getSolution())
             return(render_template("checkAnswer.html", value = finalStr))
         except:
             return(render_template("checkAnswer.html", value = finalStr))
 
-        return render_template("checkAnswer.html",value = "Incorrect" + "\n The correct answer was " + str(cAnswer) + "\nThe work is shown below: \n "+ str(ApData.getSolution()))
+       # return render_template("checkAnswer.html",value = "Incorrect" + "\n The correct answer was " + str(cAnswer) + "\nThe work is shown below: \n "+ str(ApData.getSolution()))
 
 if __name__ == "__main__":
     app.run()
